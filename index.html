@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MedCare India</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#1565C0;--blue-light:#E3F2FD;--blue-mid:#1976D2;
+  --green:#2E7D32;--green-light:#E8F5E9;
+  --bg:#F0F4F8;--white:#fff;
+  --text:#1a1a2e;--text2:#555;--text3:#888;
+  --border:#E0E7EF;--radius:14px;--shadow:0 2px 12px rgba(21,101,192,0.08);
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;display:flex;justify-content:center;}
+.app{max-width:430px;width:100%;min-height:100vh;background:var(--bg);position:relative;display:flex;flex-direction:column;}
+.page{display:none;flex-direction:column;min-height:100vh;background:var(--bg);}
+.page.active{display:flex;}
+
+.top-bar{background:var(--blue);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.top-bar h2{font-size:17px;font-weight:600;flex:1;font-family:'Poppins',sans-serif;}
+.back-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1;}
+
+.bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;}
+.nav-btn{flex:1;padding:10px 4px 8px;background:none;border:none;cursor:pointer;font-size:10px;color:var(--text3);display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'Nunito',sans-serif;}
+.nav-btn.active{color:var(--blue);}
+.nav-icon{font-size:19px;}
+
+/* LOGIN */
+.login-hero{background:linear-gradient(135deg,#1565C0 0%,#0D47A1 60%,#01579B 100%);padding:52px 24px 40px;text-align:center;color:#fff;}
+.app-icon-wrap{width:72px;height:72px;background:rgba(255,255,255,0.18);border-radius:20px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:32px;border:1.5px solid rgba(255,255,255,0.3);}
+.login-hero h1{font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;margin-bottom:6px;}
+.login-hero p{font-size:14px;opacity:0.85;}
+.login-form{padding:28px 22px;flex:1;background:var(--bg);}
+.field{margin-bottom:16px;}
+.field label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px;font-weight:600;}
+.field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;background:#fff;color:var(--text);outline:none;transition:border 0.2s;}
+.field input:focus{border-color:var(--blue);}
+.btn-primary{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;}
+.btn-primary:active{opacity:0.88;}
+.link-text{text-align:center;margin-top:16px;font-size:14px;color:var(--text3);}
+.link-text span{color:var(--blue);cursor:pointer;font-weight:600;}
+
+/* SHARED */
+.content{padding:16px;flex:1;overflow-y:auto;}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card h3{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text);font-family:'Poppins',sans-serif;}
+.section-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;margin-bottom:10px;margin-top:4px;}
+
+/* HOME */
+.home-header{background:linear-gradient(135deg,#1565C0,#1976D2);padding:22px 18px 20px;color:#fff;}
+.home-header h2{font-family:'Poppins',sans-serif;font-size:21px;font-weight:700;}
+.home-header p{font-size:13px;opacity:0.85;margin-top:3px;}
+.health-strip{display:flex;gap:10px;padding:14px 16px 0;}
+.hc{flex:1;background:#fff;border-radius:12px;padding:11px 10px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
+.hc .val{font-size:20px;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif;}
+.hc .lbl{font-size:10px;color:var(--text3);margin-top:2px;font-weight:600;}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px;}
+.home-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;cursor:pointer;text-align:center;box-shadow:var(--shadow);}
+.home-card:active{opacity:0.9;}
+.home-card .icon{font-size:28px;margin-bottom:9px;}
+.home-card h3{font-size:13px;font-weight:700;line-height:1.4;color:var(--text);font-family:'Poppins',sans-serif;}
+.ai-home-card{background:linear-gradient(135deg,#1565C0,#6A1B9A);border:none;}
+.ai-home-card h3{color:#fff;}
+
+/* REMINDER */
+.reminder-item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);}
+.reminder-item:last-child{border-bottom:none;}
+.rem-info h4{font-size:14px;font-weight:700;}
+.rem-info p{font-size:12px;color:var(--text3);margin-top:2px;}
+.badge{font-size:11px;padding:4px 11px;border-radius:20px;font-weight:700;}
+.badge.morning{background:#FFF8E1;color:#F57F17;}
+.badge.noon{background:#E8F5E9;color:#2E7D32;}
+.badge.night{background:#E3F2FD;color:#1565C0;}
+.badge.evening{background:#F3E5F5;color:#6A1B9A;}
+.add-btn{display:flex;align-items:center;gap:8px;width:100%;padding:13px;background:var(--blue-light);border:1.5px dashed #90CAF9;border-radius:10px;font-size:14px;color:var(--blue);cursor:pointer;justify-content:center;font-weight:700;margin-top:6px;}
+
+/* MEDICINE */
+.med-search{display:flex;gap:8px;margin-bottom:16px;}
+.med-search input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;outline:none;background:#fff;}
+.med-search input:focus{border-color:var(--blue);}
+.med-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow);}
+.med-header{padding:14px 16px;color:#fff;}
+.med-header h4{font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;}
+.med-header p{font-size:12px;opacity:0.88;margin-top:2px;}
+.med-body{padding:12px 16px;background:#fff;}
+.med-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F5F5F5;font-size:13px;}
+.med-row:last-child{border-bottom:none;}
+.med-row span:first-child{color:var(--text3);}
+.med-row span:last-child{font-weight:700;color:var(--text);text-align:right;max-width:60%;}
+
+/* NEARBY */
+.map-box{background:linear-gradient(135deg,#E3F2FD,#E8F5E9);border-radius:var(--radius);height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex-direction:column;gap:6px;border:1px solid #B3E5FC;}
+.map-box p{font-size:14px;color:var(--blue);font-weight:700;}
+.map-box span{font-size:11px;color:var(--text3);}
+.location-item{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;cursor:pointer;text-decoration:none;color:inherit;background:#fff;box-shadow:var(--shadow);}
+.location-item:active{background:#F5F5F5;}
+.loc-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.loc-info{flex:1;}
+.loc-info h4{font-size:14px;font-weight:700;}
+.loc-info p{font-size:12px;color:var(--text3);margin-top:2px;}
+.dist-badge{font-size:12px;color:var(--blue);font-weight:700;white-space:nowrap;}
+
+/* MAINTENANCE */
+.strict-header{background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;}
+.strict-header p{font-size:13px;color:#E65100;line-height:1.6;font-weight:600;}
+.rule-item{display:flex;gap:12px;padding:13px;background:#fff;border-radius:12px;margin-bottom:10px;align-items:flex-start;border:1px solid var(--border);box-shadow:var(--shadow);}
+.rule-num{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.rule-text h4{font-size:14px;font-weight:700;color:var(--text);}
+.rule-text p{font-size:12px;color:var(--text3);margin-top:3px;line-height:1.6;}
+.progress-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;font-weight:600;}
+.progress-bar{height:9px;background:#E0E7EF;border-radius:5px;overflow:hidden;margin-bottom:14px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#42A5F5);border-radius:5px;}
+
+/* DOCTORS */
+.doctor-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;background:#fff;box-shadow:var(--shadow);}
+.doc-avatar{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.doc-info{flex:1;}
+.doc-info h4{font-size:14px;font-weight:700;color:var(--text);}
+.doc-info .spec{font-size:12px;color:var(--blue);font-weight:600;margin-top:1px;}
+.doc-info .hosp{font-size:11px;color:var(--text3);}
+.call-btn{background:#E8F5E9;border:none;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:19px;text-decoration:none;display:flex;align-items:center;justify-content:center;}
+.filter-row{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-chip{padding:7px 15px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:12px;cursor:pointer;white-space:nowrap;color:var(--text3);font-weight:600;font-family:'Nunito',sans-serif;}
+.filter-chip.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* AI PAGE */
+.ai-page{display:none;flex-direction:column;min-height:100vh;background:var(--bg);}
+.ai-page.active{display:flex;}
+.ai-top{background:linear-gradient(135deg,#1565C0,#6A1B9A);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ai-top h2{font-size:17px;font-weight:600;flex:1;font-family:'Poppins',sans-serif;}
+.ai-dot{width:9px;height:9px;border-radius:50%;background:#69FF47;box-shadow:0 0 6px #69FF47;animation:pulse 1.5s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.chat-area{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.msg{max-width:84%;padding:11px 14px;border-radius:16px;font-size:14px;line-height:1.6;}
+.msg.ai{background:#fff;border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px;align-self:flex-start;box-shadow:var(--shadow);}
+.msg.user{background:var(--blue);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+.msg .sender{font-size:11px;font-weight:700;margin-bottom:5px;opacity:0.65;}
+.disclaimer{font-size:11px;color:var(--text3);text-align:center;padding:6px 16px;line-height:1.5;flex-shrink:0;}
+.quick-chips{display:flex;gap:8px;padding:0 14px 10px;overflow-x:auto;flex-shrink:0;}
+.quick-chips::-webkit-scrollbar{display:none;}
+.qchip{padding:7px 13px;background:var(--blue-light);border:1px solid #90CAF9;border-radius:20px;font-size:12px;color:var(--blue);cursor:pointer;white-space:nowrap;font-weight:600;font-family:'Nunito',sans-serif;}
+.ai-input-bar{display:flex;gap:8px;padding:10px 14px 14px;background:#fff;border-top:1px solid var(--border);flex-shrink:0;}
+.ai-input-bar input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:24px;font-size:14px;font-family:'Nunito',sans-serif;outline:none;background:#fff;}
+.ai-input-bar input:focus{border-color:var(--blue);}
+.send-btn{width:44px;height:44px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.send-btn:active{opacity:0.85;}
+.typing{display:flex;gap:5px;align-items:center;padding:10px 14px;background:#fff;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;align-self:flex-start;box-shadow:var(--shadow);}
+.typing span{width:7px;height:7px;background:#90CAF9;border-radius:50%;animation:bounce 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:0.2s;}
+.typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.cursor{animation:blink 0.7s infinite;color:#1565C0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- PAGE 1: LOGIN -->
+<div id="page-login" class="page active">
+  <div class="login-hero">
+    <div class="app-icon-wrap">💊</div>
+    <h1>MedCare India</h1>
+    <p>Your personal health companion</p>
+  </div>
+  <div class="login-form">
+    <div class="field"><label>Mobile / Email</label><input type="text" placeholder="Enter mobile or email" id="login-email"/></div>
+    <div class="field"><label>Password</label><input type="password" placeholder="••••••••"/></div>
+    <button class="btn-primary" onclick="goHome()">Sign In</button>
+    <p class="link-text">New user? <span onclick="goHome()">Register free</span></p>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page">
+  <div class="home-header">
+    <h2>Welcome to MedCare 💊</h2>
+    <p>Tamil Nadu · Stay healthy today</p>
+  </div>
+  <div class="health-strip">
+    <div class="hc"><div class="val">5</div><div class="lbl">Meds Today</div></div>
+    <div class="hc"><div class="val">3</div><div class="lbl">Reminders</div></div>
+    <div class="hc"><div class="val">18</div><div class="lbl">Nearby</div></div>
+  </div>
+  <div class="home-grid">
+    <div class="home-card" onclick="showPage('page-reminder')"><div class="icon">⏰</div><h3>Medicine Reminder</h3></div>
+    <div class="home-card" onclick="showPage('page-medinfo')"><div class="icon">💊</div><h3>Medicine Info</h3></div>
+    <div class="home-card" onclick="showPage('page-nearby')"><div class="icon">📍</div><h3>Hospitals &amp; Shops</h3></div>
+    <div class="home-card" onclick="showPage('page-maintain')"><div class="icon">📋</div><h3>Health Rules</h3></div>
+    <div class="home-card ai-home-card" onclick="showPage('page-ai')" style="grid-column:span 2;"><div class="icon">🤖</div><h3>AI Medical Assistant</h3></div>
+    <div class="home-card" onclick="showPage('page-doctors')" style="grid-column:span 2;"><div class="icon">👨‍⚕️</div><h3>Doctors in India</h3></div>
+  </div>
+  <div style="flex:1"></div>
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="showPage('page-home')"><span class="nav-icon">🏠</span>Home</button>
+    <button class="nav-btn" onclick="showPage('page-reminder')"><span class="nav-icon">⏰</span>Remind</button>
+    <button class="nav-btn" onclick="showPage('page-ai')"><span class="nav-icon">🤖</span>AI Chat</button>
+    <button class="nav-btn" onclick="showPage('page-nearby')"><span class="nav-icon">📍</span>Nearby</button>
+    <button class="nav-btn" onclick="showPage('page-doctors')"><span class="nav-icon">👨‍⚕️</span>Doctors</button>
+  </div>
+</div>
+
+<!-- PAGE 2: REMINDER -->
+<div id="page-reminder" class="page">
+  <div class="top-bar"><button class="back-btn" onclick="showPage('page-home')">←</button><h2>Medicine Reminders</h2></div>
+  <div class="content">
+    <div class="card">
+      <h3>Today's Schedule</h3>
+      <div class="reminder-item"><div class="rem-info"><h4>Metformin 500mg</h4><p>After breakfast · 8:00 AM</p></div><span class="badge morning">Morning</span></div>
+      <div class="reminder-item"><div class="rem-info"><h4>Pantoprazole 40mg</h4><p>Empty stomach · 7:00 AM</p></div><span class="badge morning">Morning</span></div>
+      <div class="reminder-item"><div class="rem-info"><h4>Atorvastatin 10mg</h4><p>After lunch · 1:00 PM</p></div><span class="badge noon">Noon</span></div>
+      <div class="reminder-item"><div class="rem-info"><h4>Cetirizine 10mg</h4><p>After dinner · 8:00 PM</p></div><span class="badge evening">Evening</span></div>
+      <div class="reminder-item"><div class="rem-info"><h4>Amlodipine 5mg</h4><p>Before bed · 9:30 PM</p></div><span class="badge night">Night</span></div>
+      <div class="reminder-item"><div class="rem-info"><h4>Vitamin D3 60K</h4><p>Sunday only · 9:00 AM</p></div><span class="badge morning">Weekly</span></div>
+    </div>
+    <button class="add-btn" onclick="openReminderModal()">＋ Add New Reminder</button>
+  </div>
+</div>
+
+<!-- ADD REMINDER MODAL -->
+<div id="reminder-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;align-items:flex-end;justify-content:center;overflow-y:auto;">
+  <div style="background:#fff;border-radius:22px 22px 0 0;padding:24px 20px 32px;width:100%;max-width:430px;box-shadow:0 -4px 24px rgba(0,0,0,0.15);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:#1a1a2e;">Add Medicine Reminder</h3>
+      <button onclick="closeReminderModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">✕</button>
+    </div>
+
+    <!-- Basic fields -->
+    <div class="field"><label>Medicine Name</label><input type="text" id="rem-name" placeholder="e.g. Metformin 500mg"/></div>
+    <div class="field"><label>Time</label><input type="time" id="rem-time"/></div>
+    <div class="field">
+      <label>When to Take</label>
+      <select id="rem-when" style="width:100%;padding:12px 14px;border:1.5px solid #E0E7EF;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;background:#fff;color:#1a1a2e;outline:none;">
+        <option value="Before breakfast">Before breakfast</option>
+        <option value="After breakfast">After breakfast</option>
+        <option value="Empty stomach">Empty stomach</option>
+        <option value="After lunch">After lunch</option>
+        <option value="After dinner">After dinner</option>
+        <option value="Before bed">Before bed</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Session</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="sess-btn active" data-sess="morning" onclick="selectSession(this)">🌅 Morning</button>
+        <button class="sess-btn" data-sess="noon" onclick="selectSession(this)">☀️ Noon</button>
+        <button class="sess-btn" data-sess="evening" onclick="selectSession(this)">🌆 Evening</button>
+        <button class="sess-btn" data-sess="night" onclick="selectSession(this)">🌙 Night</button>
+      </div>
+    </div>
+
+    <!-- ── Notification Channels ─────────────────────── -->
+    <div style="background:#F0F4F8;border-radius:12px;padding:14px;margin-bottom:14px;">
+      <p style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;letter-spacing:0.5px;">📣 NOTIFY ME VIA</p>
+      <div style="display:flex;gap:10px;margin-bottom:12px;">
+        <!-- Email toggle -->
+        <label id="lbl-email-ch" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid #E0E7EF;border-radius:10px;cursor:pointer;background:#fff;transition:border 0.2s;">
+          <input type="checkbox" id="ch-email" onchange="toggleChannel()" style="width:16px;height:16px;accent-color:#1565C0;cursor:pointer;"/>
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e;">📧 Email</span>
+        </label>
+        <!-- SMS toggle -->
+        <label id="lbl-sms-ch" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid #E0E7EF;border-radius:10px;cursor:pointer;background:#fff;transition:border 0.2s;">
+          <input type="checkbox" id="ch-sms" onchange="toggleChannel()" style="width:16px;height:16px;accent-color:#1565C0;cursor:pointer;"/>
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e;">📱 SMS</span>
+        </label>
+      </div>
+
+      <!-- Email input — shown when email checked -->
+      <div id="field-email" style="display:none;margin-bottom:10px;">
+        <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:5px;">Email Address</label>
+        <input type="email" id="rem-email" placeholder="yourname@gmail.com"
+          style="width:100%;padding:11px 13px;border:1.5px solid #E0E7EF;border-radius:9px;font-size:14px;font-family:'Nunito',sans-serif;background:#fff;outline:none;"/>
+      </div>
+
+      <!-- Phone input — shown when SMS checked -->
+      <div id="field-phone" style="display:none;">
+        <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:5px;">Mobile Number (Tamil Nadu)</label>
+        <div style="display:flex;align-items:center;border:1.5px solid #E0E7EF;border-radius:9px;background:#fff;overflow:hidden;">
+          <span style="padding:11px 10px;font-size:13px;font-weight:700;color:#1565C0;background:#E3F2FD;border-right:1px solid #E0E7EF;">+91</span>
+          <input type="tel" id="rem-phone" placeholder="9876543210" maxlength="10" pattern="[6-9][0-9]{9}"
+            style="flex:1;padding:11px 13px;border:none;font-size:14px;font-family:'Nunito',sans-serif;outline:none;"/>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">Enter 10-digit Indian mobile number</p>
+      </div>
+    </div>
+    <!-- ─────────────────────────────────────────────── -->
+
+    <!-- Status message area -->
+    <div id="rem-status" style="display:none;border-radius:9px;padding:10px 13px;margin-bottom:12px;font-size:13px;font-weight:600;"></div>
+
+    <button id="rem-save-btn" class="btn-primary" onclick="saveReminder()" style="margin-top:4px;">✔ Save Reminder</button>
+  </div>
+</div>
+<style>
+.sess-btn{padding:8px 14px;border:1.5px solid #E0E7EF;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;color:#888;}
+.sess-btn.active{background:#1565C0;color:#fff;border-color:#1565C0;}
+#ch-email:checked ~ span, #ch-sms:checked ~ span{color:#1565C0;}
+</style>
+
+<!-- PAGE 3: MEDICINE INFO -->
+<div id="page-medinfo" class="page">
+  <div class="top-bar"><button class="back-btn" onclick="showPage('page-home')">←</button><h2>Medicine Info</h2></div>
+  <div class="content">
+    <div class="med-search">
+      <input type="text" placeholder="Search medicine name..." id="med-search-input" oninput="filterMeds()"/>
+      <button style="padding:10px 14px;background:var(--blue);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:16px;">🔍</button>
+    </div>
+    <div id="med-list">
+
+      <div class="med-card" data-name="metformin diabetes glucomet">
+        <div class="med-header" style="background:#1565C0;"><h4>Metformin 500mg / 1000mg</h4><p>Antidiabetic · Oral tablet</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Type 2 Diabetes, PCOS</span></div>
+          <div class="med-row"><span>Dosage</span><span>500mg twice daily with meals</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Glycomet, Glucomet, Bigomet</span></div>
+          <div class="med-row"><span>Price</span><span>₹15–₹40 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Nausea, stomach upset</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="glimepiride diabetes sugar amaryl">
+        <div class="med-header" style="background:#1976D2;"><h4>Glimepiride 1mg / 2mg</h4><p>Sulfonylurea · Diabetes</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Type 2 Diabetes</span></div>
+          <div class="med-row"><span>Dosage</span><span>1–4mg once daily before breakfast</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Amaryl, Glimy, Glimer</span></div>
+          <div class="med-row"><span>Price</span><span>₹20–₹60 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Low blood sugar, dizziness</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="amlodipine blood pressure heart stamlo">
+        <div class="med-header" style="background:#00695C;"><h4>Amlodipine 5mg / 10mg</h4><p>Calcium channel blocker · BP</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>High BP, Angina</span></div>
+          <div class="med-row"><span>Dosage</span><span>5–10mg once daily</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Amlokind, Stamlo, Amlopress</span></div>
+          <div class="med-row"><span>Price</span><span>₹18–₹55 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Swollen ankles, headache</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="atorvastatin cholesterol statin lipitor">
+        <div class="med-header" style="background:#2E7D32;"><h4>Atorvastatin 10mg / 20mg</h4><p>Statin · Cholesterol &amp; Heart</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>High cholesterol, Heart disease</span></div>
+          <div class="med-row"><span>Dosage</span><span>10–80mg once at night</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Atorva, Tonact, Lipitor</span></div>
+          <div class="med-row"><span>Price</span><span>₹30–₹90 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Muscle pain, liver issues (rare)</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="telmisartan blood pressure hypertension telma">
+        <div class="med-header" style="background:#37474F;"><h4>Telmisartan 40mg / 80mg</h4><p>ARB · Hypertension</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>High BP, Kidney protection</span></div>
+          <div class="med-row"><span>Dosage</span><span>40–80mg once daily</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Telmikind, Telma, Sartel</span></div>
+          <div class="med-row"><span>Price</span><span>₹35–₹100 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Dizziness, back pain</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="pantoprazole acidity gastric pan40 pantocid">
+        <div class="med-header" style="background:#6A1B9A;"><h4>Pantoprazole 40mg</h4><p>PPI · Acidity / GERD</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Acidity, GERD, Ulcers</span></div>
+          <div class="med-row"><span>Dosage</span><span>40mg on empty stomach</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Pan 40, Pantocid, Pantop</span></div>
+          <div class="med-row"><span>Price</span><span>₹20–₹60 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Headache, nausea (rare)</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="domperidone nausea vomiting domstal">
+        <div class="med-header" style="background:#AD1457;"><h4>Domperidone 10mg</h4><p>Antiemetic · Nausea / Vomiting</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Nausea, vomiting, bloating</span></div>
+          <div class="med-row"><span>Dosage</span><span>10mg 3x daily before meals</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Domstal, Vomistop, Motilium</span></div>
+          <div class="med-row"><span>Price</span><span>₹12–₹35 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Dry mouth, headache</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="azithromycin antibiotic infection azithral azee">
+        <div class="med-header" style="background:#C62828;"><h4>Azithromycin 500mg</h4><p>Antibiotic · Bacterial infections</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Chest, throat, skin infections</span></div>
+          <div class="med-row"><span>Dosage</span><span>500mg once daily 3–5 days</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Azithral, Azee, Zithromax</span></div>
+          <div class="med-row"><span>Price</span><span>₹60–₹120 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Diarrhea, stomach pain</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="amoxicillin antibiotic penicillin mox novamox">
+        <div class="med-header" style="background:#BF360C;"><h4>Amoxicillin 500mg</h4><p>Penicillin Antibiotic</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Throat, ear, UTI, dental</span></div>
+          <div class="med-row"><span>Dosage</span><span>500mg 3x daily with/without food</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Mox, Novamox, Amoxil</span></div>
+          <div class="med-row"><span>Price</span><span>₹25–₹65 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Rash, diarrhea, allergy</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="paracetamol fever pain crocin dolo calpol">
+        <div class="med-header" style="background:#E65100;"><h4>Paracetamol 500mg / 650mg</h4><p>Analgesic / Antipyretic</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Fever, headache, body ache</span></div>
+          <div class="med-row"><span>Dosage</span><span>500–1000mg every 4–6 hrs</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Crocin, Calpol, Dolo 650</span></div>
+          <div class="med-row"><span>Price</span><span>₹10–₹30 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Liver damage if overdosed</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="ibuprofen pain anti-inflammatory brufen combiflam">
+        <div class="med-header" style="background:#F57F17;"><h4>Ibuprofen 400mg</h4><p>NSAID · Pain &amp; Inflammation</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Pain, fever, arthritis, cramps</span></div>
+          <div class="med-row"><span>Dosage</span><span>400mg 3x daily after meals</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Brufen, Combiflam, Ibugesic</span></div>
+          <div class="med-row"><span>Price</span><span>₹15–₹40 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Stomach irritation, kidney strain</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="cetirizine allergy cold antihistamine zyrtec">
+        <div class="med-header" style="background:#0277BD;"><h4>Cetirizine 10mg</h4><p>Antihistamine · Allergy &amp; Cold</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Allergies, cold, skin rash</span></div>
+          <div class="med-row"><span>Dosage</span><span>10mg once at night</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Cetzine, Alerid, Zyrtec</span></div>
+          <div class="med-row"><span>Price</span><span>₹10–₹28 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Drowsiness, dry mouth</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="vitamin d3 bone calcium calcirol uprise">
+        <div class="med-header" style="background:#558B2F;"><h4>Vitamin D3 60,000 IU</h4><p>Bone &amp; Immunity vitamin</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Bone health, immunity, deficiency</span></div>
+          <div class="med-row"><span>Dosage</span><span>1 sachet/capsule once a week</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Calcirol, D-Rise, Uprise D3</span></div>
+          <div class="med-row"><span>Price</span><span>₹30–₹80 / sachet</span></div>
+          <div class="med-row"><span>Side effects</span><span>Toxicity if excess dose</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="vitamin b12 nerve methylcobalamin mecobalamin">
+        <div class="med-header" style="background:#00838F;"><h4>Methylcobalamin (B12) 500mcg</h4><p>Vitamin B12 · Nerve health</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Nerve pain, B12 deficiency, anaemia</span></div>
+          <div class="med-row"><span>Dosage</span><span>500mcg once or twice daily</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Nervijen, Methycobal, Cobadex</span></div>
+          <div class="med-row"><span>Price</span><span>₹40–₹90 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Generally very safe</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="omeprazole acidity ulcer prilosec omez">
+        <div class="med-header" style="background:#4527A0;"><h4>Omeprazole 20mg</h4><p>PPI · Acidity / Stomach ulcer</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>Acidity, ulcers, heartburn</span></div>
+          <div class="med-row"><span>Dosage</span><span>20mg once daily before food</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Omez, Prilosec, Omecip</span></div>
+          <div class="med-row"><span>Price</span><span>₹15–₹50 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Headache, diarrhea (rare)</span></div>
+        </div>
+      </div>
+
+      <div class="med-card" data-name="losartan blood pressure hypertension kidney losium">
+        <div class="med-header" style="background:#1B5E20;"><h4>Losartan 50mg / 100mg</h4><p>ARB · Blood pressure</p></div>
+        <div class="med-body">
+          <div class="med-row"><span>Uses</span><span>High BP, diabetic kidney disease</span></div>
+          <div class="med-row"><span>Dosage</span><span>50–100mg once daily</span></div>
+          <div class="med-row"><span>Brands in India</span><span>Losium, Covance, Repace</span></div>
+          <div class="med-row"><span>Price</span><span>₹30–₹80 / strip</span></div>
+          <div class="med-row"><span>Side effects</span><span>Dizziness, high potassium</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: NEARBY — WORKS WITHOUT GPS -->
+<div id="page-nearby" class="page">
+  <div class="top-bar"><button class="back-btn" onclick="showPage('page-home')">←</button><h2>Nearby Hospitals &amp; Shops</h2></div>
+  <div class="content">
+
+    <!-- Working Maps button — uses selected city -->
+    <div onclick="openMapsForCity()"
+       style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1565C0,#1976D2);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer;color:#fff;">
+      <span style="font-size:32px;">🗺️</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;">Open Google Maps</div>
+        <div id="maps-btn-label" style="font-size:12px;opacity:0.85;">Find hospitals in Rajapalayam</div>
+      </div>
+      <span style="margin-left:auto;font-size:20px;">↗</span>
+    </div>
+
+    <!-- City selector -->
+    <div style="margin-bottom:14px;">
+      <p class="section-label">SELECT YOUR CITY</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="city-btn active" onclick="selectCity(this,'Rajapalayam')">Rajapalayam</button>
+        <button class="city-btn" onclick="selectCity(this,'Tirunelveli')">Tirunelveli</button>
+        <button class="city-btn" onclick="selectCity(this,'Madurai')">Madurai</button>
+        <button class="city-btn" onclick="selectCity(this,'Coimbatore')">Coimbatore</button>
+        <button class="city-btn" onclick="selectCity(this,'Chennai')">Chennai</button>
+        <button class="city-btn" onclick="selectCity(this,'Vellore')">Vellore</button>
+      </div>
+    </div>
+    <style>
+      .city-btn{padding:8px 14px;border:1.5px solid #E0E7EF;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;color:#555;}
+      .city-btn.active{background:#1565C0;color:#fff;border-color:#1565C0;}
+    </style>
+
+    <!-- Dynamic city results -->
+    <div id="city-hospitals"></div>
+    <div id="city-pharmacies"></div>
+
+    <!-- Online pharmacies always shown -->
+    <p class="section-label" style="margin-top:6px;">💊 ONLINE PHARMACIES — DELIVER ANYWHERE</p>
+    <a class="location-item" href="https://www.1mg.com" target="_blank"><div class="loc-icon" style="background:#E8F5E9;">💊</div><div class="loc-info"><h4>1mg Online</h4><p>Order & get home delivery in Tamil Nadu</p></div><span class="dist-badge">Online ↗</span></a>
+    <a class="location-item" href="https://pharmeasy.in" target="_blank"><div class="loc-icon" style="background:#E8F5E9;">💊</div><div class="loc-info"><h4>PharmEasy</h4><p>Pan Tamil Nadu delivery</p></div><span class="dist-badge">Online ↗</span></a>
+    <a class="location-item" href="https://www.netmeds.com" target="_blank"><div class="loc-icon" style="background:#E8F5E9;">💊</div><div class="loc-info"><h4>Netmeds</h4><p>Reliance Health — TN delivery</p></div><span class="dist-badge">Online ↗</span></a>
+
+  </div>
+</div>
+
+<!-- PAGE 5: HEALTH RULES -->
+<div id="page-maintain" class="page">
+  <div class="top-bar"><button class="back-btn" onclick="showPage('page-home')">←</button><h2>Strict Health Rules</h2></div>
+  <div class="content">
+    <div class="strict-header"><span style="font-size:22px">⚠️</span><p>Follow these rules strictly. Your medication works only when combined with healthy habits.</p></div>
+    <div class="progress-row"><span style="color:var(--text2)">Today's compliance</span><span style="color:var(--blue)">75%</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+    <div class="rule-item"><div class="rule-num">1</div><div class="rule-text"><h4>Never skip a dose</h4><p>Take medicine at the same time every day. Missing doses reduces effectiveness.</p></div></div>
+    <div class="rule-item"><div class="rule-num">2</div><div class="rule-text"><h4>No alcohol with medication</h4><p>Alcohol reacts dangerously with BP, diabetes, and antibiotic medicines.</p></div></div>
+    <div class="rule-item"><div class="rule-num">3</div><div class="rule-text"><h4>Drink 8+ glasses of water daily</h4><p>Helps kidneys process medicine and avoids dehydration side effects.</p></div></div>
+    <div class="rule-item"><div class="rule-num">4</div><div class="rule-text"><h4>Low-sodium, low-sugar diet</h4><p>Avoid maida, namkeen, pickles, fried food. Critical for BP and diabetes patients.</p></div></div>
+    <div class="rule-item"><div class="rule-num">5</div><div class="rule-text"><h4>30 mins walking daily</h4><p>Improves blood circulation, blood sugar control, and heart health.</p></div></div>
+    <div class="rule-item"><div class="rule-num">6</div><div class="rule-text"><h4>Blood tests every 3 months</h4><p>HbA1c, lipid profile, kidney function — monitor medicine effectiveness.</p></div></div>
+    <div class="rule-item"><div class="rule-num">7</div><div class="rule-text"><h4>Store medicines correctly</h4><p>Keep away from sunlight and moisture. Away from children.</p></div></div>
+    <div class="rule-item"><div class="rule-num">8</div><div class="rule-text"><h4>Check expiry before use</h4><p>Never use expired medicines. Dispose safely — don't flush down drain.</p></div></div>
+  </div>
+</div>
+
+<!-- PAGE 6: DOCTORS -->
+<div id="page-doctors" class="page">
+  <div class="top-bar"><button class="back-btn" onclick="showPage('page-home')">←</button><h2>Doctors in India</h2></div>
+  <div class="content">
+    <div class="filter-row">
+      <span class="filter-chip active" onclick="filterDocs(this,'all')">All</span>
+      <span class="filter-chip" onclick="filterDocs(this,'general')">General</span>
+      <span class="filter-chip" onclick="filterDocs(this,'cardiology')">Cardiology</span>
+      <span class="filter-chip" onclick="filterDocs(this,'diabetes')">Diabetes</span>
+      <span class="filter-chip" onclick="filterDocs(this,'ortho')">Ortho</span>
+      <span class="filter-chip" onclick="filterDocs(this,'neuro')">Neurology</span>
+    </div>
+    <div id="doc-list">
+      <div class="doctor-card" data-spec="general"><div class="doc-avatar" style="background:#E3F2FD;">👨‍⚕️</div><div class="doc-info"><h4>Dr. Rajesh Kumar</h4><p class="spec">General Physician</p><p class="hosp">AIIMS New Delhi · 4.9 ⭐ · +91 11-2658-8500</p></div><a href="tel:+911126588500" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="cardiology"><div class="doc-avatar" style="background:#FCE4EC;">👩‍⚕️</div><div class="doc-info"><h4>Dr. Priya Sharma</h4><p class="spec">Cardiologist</p><p class="hosp">Apollo Chennai · 4.8 ⭐ · +91 44-2829-3333</p></div><a href="tel:+914428293333" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="diabetes"><div class="doc-avatar" style="background:#E8F5E9;">👨‍⚕️</div><div class="doc-info"><h4>Dr. Anand Krishnan</h4><p class="spec">Endocrinologist / Diabetes</p><p class="hosp">Fortis Mumbai · 4.7 ⭐ · +91 22-4925-4925</p></div><a href="tel:+912249254925" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="ortho"><div class="doc-avatar" style="background:#FFF8E1;">👩‍⚕️</div><div class="doc-info"><h4>Dr. Meena Patel</h4><p class="spec">Orthopedic Surgeon</p><p class="hosp">Manipal Bengaluru · 4.6 ⭐ · +91 80-2502-4444</p></div><a href="tel:+918025024444" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="neuro"><div class="doc-avatar" style="background:#F3E5F5;">👨‍⚕️</div><div class="doc-info"><h4>Dr. Suresh Naik</h4><p class="spec">Neurologist</p><p class="hosp">Narayana Kolkata · 4.8 ⭐ · +91 33-7122-2222</p></div><a href="tel:+913371222222" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="cardiology"><div class="doc-avatar" style="background:#E0F2F1;">👨‍⚕️</div><div class="doc-info"><h4>Dr. Vikram Mehta</h4><p class="spec">Interventional Cardiologist</p><p class="hosp">Medanta Gurgaon · 4.9 ⭐ · +91 124-4141-414</p></div><a href="tel:+911244141414" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="general"><div class="doc-avatar" style="background:#FFF3E0;">👩‍⚕️</div><div class="doc-info"><h4>Dr. Sunita Rao</h4><p class="spec">General &amp; Family Medicine</p><p class="hosp">Hyderabad · 4.7 ⭐ · +91 40-2360-1234</p></div><a href="tel:+914023601234" class="call-btn">📞</a></div>
+      <div class="doctor-card" data-spec="diabetes"><div class="doc-avatar" style="background:#E8EAF6;">👩‍⚕️</div><div class="doc-info"><h4>Dr. Kavitha Iyer</h4><p class="spec">Diabetologist &amp; Nutritionist</p><p class="hosp">Chennai · 4.8 ⭐ · +91 44-4321-5678</p></div><a href="tel:+914443215678" class="call-btn">📞</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI ASSISTANT PAGE -->
+<div id="page-ai" class="ai-page">
+  <div class="ai-top">
+    <button class="back-btn" onclick="showPage('page-home')">←</button>
+    <h2>AI Medical Assistant</h2>
+    <button onclick="clearChat()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;">🗑 Clear</button>
+    <div class="ai-dot"></div>
+  </div>
+  <div class="chat-area" id="chat-area">
+    <div class="msg ai">
+      <div class="sender">MedCare AI</div>
+      🙏 Namaste! I'm MedCare AI — your personal medical assistant.<br><br>
+      I can help with:<br>
+      • 💊 Medicine info, dosage &amp; Indian brands<br>
+      • 🩺 Symptoms &amp; what to do next<br>
+      • ⚕️ Drug interactions &amp; side effects<br>
+      • 🥗 Diet &amp; lifestyle for Indian conditions<br><br>
+      I <b>remember our full conversation</b> so feel free to ask follow-up questions!<br>
+      <em>Note: Always consult a qualified doctor for personal medical decisions.</em>
+    </div>
+  </div>
+  <div class="disclaimer">⚠️ For informational purposes only — not a substitute for professional medical advice.</div>
+  <div class="quick-chips">
+    <span class="qchip" onclick="quickAsk('What is Metformin used for and what are its side effects?')">Metformin uses</span>
+    <span class="qchip" onclick="quickAsk('What are the side effects of Atorvastatin?')">Atorvastatin</span>
+    <span class="qchip" onclick="quickAsk('I have fever and headache, what should I do?')">Fever &amp; headache</span>
+    <span class="qchip" onclick="quickAsk('What foods should I avoid with blood pressure medicine?')">BP diet tips</span>
+    <span class="qchip" onclick="quickAsk('Difference between Paracetamol and Ibuprofen — which is better for fever?')">Paracetamol vs Ibuprofen</span>
+    <span class="qchip" onclick="quickAsk('What medicines are commonly prescribed for diabetes in India?')">Diabetes meds India</span>
+  </div>
+  <div class="ai-input-bar">
+    <input type="text" id="ai-input" placeholder="Ask about medicines, symptoms, health..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="send-btn" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page,.ai-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='page-nearby'){
+    const defaultBtn=document.querySelector('.city-btn.active');
+    if(defaultBtn) selectCity(defaultBtn, defaultBtn.textContent.trim());
+  }
+}
+function goHome(){
+  const v=document.getElementById('login-email').value.trim();
+  if(!v){alert('Please enter your mobile number or email.');return;}
+  showPage('page-home');
+}
+function filterMeds(){
+  const q=document.getElementById('med-search-input').value.toLowerCase();
+  document.querySelectorAll('#med-list .med-card').forEach(c=>{
+    c.style.display=(!q||c.dataset.name.includes(q))?'block':'none';
+  });
+}
+function filterDocs(el,spec){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#doc-list .doctor-card').forEach(c=>{
+    c.style.display=(spec==='all'||c.dataset.spec===spec)?'flex':'none';
+  });
+}
+
+// ── AI System Prompt ─────────────────────────────────────────────
+const SYSTEM = `You are MedCare AI — a real, intelligent medical assistant built for Indian users in Tamil Nadu.
+
+You have full conversational memory. You remember what the user said earlier in the chat and can follow up, ask clarifying questions, and give personalised advice based on the full conversation.
+
+Your capabilities:
+1. MEDICINE INFO: Indian brand names (Crocin, Dolo 650, Glycomet, Pan 40, Stamlo, etc.), dosage, side effects, prices in ₹
+2. SYMPTOM ANALYSIS: Ask follow-up questions about symptoms (duration, severity, age, other conditions), then suggest likely causes and steps
+3. DRUG INTERACTIONS: Warn about dangerous combinations
+4. EMERGENCY TRIAGE: Detect emergencies (chest pain, stroke signs, severe breathing issues) — immediately say 🚨 EMERGENCY: Call 108 now
+5. DIET & LIFESTYLE: India-specific advice (idli, rice, dal, coconut oil context) for diabetes, BP, cholesterol
+6. FOLLOW-UP: Remember the patient's condition across the conversation and give consistent advice
+
+Behaviour:
+- Talk like a caring, knowledgeable doctor — warm but clear
+- Ask one follow-up question if needed to give better advice
+- Use simple English mixed with Tamil-friendly terms when natural
+- Format with bullet points and bold headers for clarity
+- For serious symptoms always say: go to Raja's Hospital or Tirunelveli Medical College nearby
+- End every response with a short reminder: ⚠️ Please consult a doctor for final diagnosis.
+- NEVER refuse to engage — always try to help with the best information available`;
+
+// ── Conversation History (multi-turn memory) ─────────────────────
+let chatHistory = [];
+let isStreaming = false;
+
+async function sendMsg() {
+  if (isStreaming) return;
+  const inp = document.getElementById('ai-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  inp.disabled = true;
+
+  // Add user message to UI and history
+  addMsg(text, 'user');
+  chatHistory.push({ role: 'user', content: text });
+
+  // Create AI message bubble for streaming into
+  const aiDiv = createStreamingBubble();
+  isStreaming = true;
+
+  try {
+    // AI calls go through the backend proxy — API key stays server-side
+    const res = await fetch(`${BACKEND_URL}/api/ai/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: SYSTEM,
+        messages: chatHistory
+      })
+    });
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    const span = aiDiv.querySelector('.ai-stream');
+
+    // Stream chunks into the bubble in real time
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') continue;
+          try {
+            const json = JSON.parse(data);
+            if (json.type === 'content_block_delta' && json.delta?.text) {
+              fullText += json.delta.text;
+              span.innerHTML = formatAIText(fullText) + '<span class="cursor">▌</span>';
+              const area = document.getElementById('chat-area');
+              area.scrollTop = area.scrollHeight;
+            }
+          } catch(e) {}
+        }
+      }
+    }
+
+    // Finalise — remove cursor, save to history
+    span.innerHTML = formatAIText(fullText);
+    chatHistory.push({ role: 'assistant', content: fullText });
+
+  } catch (e) {
+    // Fallback to offline KB if API fails
+    const fallback = getAIReply(text);
+    const span = aiDiv.querySelector('.ai-stream');
+    span.innerHTML = fallback;
+    chatHistory.push({ role: 'assistant', content: fallback });
+  }
+
+  isStreaming = false;
+  inp.disabled = false;
+  inp.focus();
+  const area = document.getElementById('chat-area');
+  area.scrollTop = area.scrollHeight;
+}
+
+function formatAIText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/\*(.*?)\*/g, '<i>$1</i>')
+    .replace(/^#{1,3} (.+)$/gm, '<b style="font-size:15px">$1</b>')
+    .replace(/^• /gm, '• ')
+    .replace(/^- /gm, '• ')
+    .replace(/\n/g, '<br>');
+}
+
+function createStreamingBubble() {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  const s = document.createElement('div'); s.className = 'sender'; s.textContent = 'MedCare AI';
+  const c = document.createElement('span'); c.className = 'ai-stream';
+  c.innerHTML = '<span class="cursor">▌</span>';
+  div.appendChild(s); div.appendChild(c);
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+  return div;
+}
+
+// ── Offline Fallback KB ──────────────────────────────────────────
+const KB = [
+  {keys:['metformin','glycomet','glucomet','bigomet'],reply:`💊 <b>Metformin</b> (Glycomet / Glucomet)<br>• <b>Uses:</b> Type 2 Diabetes, PCOS<br>• <b>Dosage:</b> 500mg twice daily with meals<br>• <b>Price:</b> ₹15–₹40 per strip<br>• <b>Side effects:</b> Nausea, stomach upset<br><br>⚠️ Please consult a doctor for final diagnosis.`},
+  {keys:['paracetamol','crocin','dolo','calpol'],reply:`💊 <b>Paracetamol</b> (Crocin / Dolo 650)<br>• <b>Uses:</b> Fever, headache, mild pain<br>• <b>Dosage:</b> 500–650mg every 4–6 hrs (max 4g/day)<br>• <b>Price:</b> ₹10–₹30 per strip<br><br>⚠️ Please consult a doctor for final diagnosis.`},
+  {keys:['ibuprofen','brufen','combiflam'],reply:`💊 <b>Ibuprofen</b> (Brufen / Combiflam)<br>• <b>Uses:</b> Pain, inflammation, fever<br>• <b>Dosage:</b> 400mg every 6–8 hrs after food<br>• Avoid if you have acidity or kidney issues<br><br>⚠️ Please consult a doctor for final diagnosis.`},
+  {keys:['fever','bukhar','temperature'],reply:`🌡️ <b>Fever</b><br>• Take Paracetamol (Dolo 650) every 6 hrs<br>• Drink ORS, coconut water, rest well<br>• See a doctor if fever > 103°F or lasts 3+ days<br><br>⚠️ Please consult a doctor for final diagnosis.`},
+  {keys:['headache','migraine','head pain'],reply:`🤕 <b>Headache</b><br>• Drink water, rest in a dark room<br>• Take Paracetamol 500mg (Crocin / Dolo)<br>• Apply Amrutanjan balm on forehead<br><br>⚠️ Please consult a doctor for final diagnosis.`},
+  {keys:['hello','hi','namaste','hey'],reply:`🙏 <b>Namaste! I'm MedCare AI.</b><br>Ask me about medicines, symptoms, diet, or health advice. I remember our full conversation so feel free to follow up! 😊`},
+];
+function getAIReply(text) {
+  const q = text.toLowerCase();
+  for (const item of KB) {
+    if (item.keys.some(k => q.includes(k))) return item.reply;
+  }
+  return `🤔 I'm having trouble connecting right now. Please check your internet and try again.<br><br>You can ask me about medicines, symptoms, diet, or general health. ⚠️ Please consult a doctor for final diagnosis.`;
+}
+
+function clearChat() {
+  chatHistory = [];
+  const area = document.getElementById('chat-area');
+  area.innerHTML = `<div class="msg ai"><div class="sender">MedCare AI</div><span>🙏 Namaste! I'm MedCare AI — your personal medical assistant.<br><br>I can help with:<br>• 💊 Medicine info, dosage & Indian brands<br>• 🩺 Symptoms & what to do next<br>• ⚕️ Drug interactions & side effects<br>• 🥗 Diet & lifestyle for Indian conditions<br><br>I <b>remember our full conversation</b> so feel free to ask follow-up questions!<br><em>Note: Always consult a qualified doctor for personal medical decisions.</em></span></div>`;
+}
+
+function quickAsk(q){document.getElementById('ai-input').value=q;sendMsg();}
+function addMsg(text,role){
+  const area=document.getElementById('chat-area');
+  const div=document.createElement('div');
+  div.className='msg '+role;
+  if(role==='ai'){
+    const s=document.createElement('div');s.className='sender';s.textContent='MedCare AI';div.appendChild(s);
+    const c=document.createElement('span');c.className='ai-stream';c.innerHTML=text;div.appendChild(c);
+  }else{div.textContent=text;}
+  area.appendChild(div);
+  area.scrollTop=area.scrollHeight;
+  return div;
+}
+// ── City-based Hospital Finder ───────────────────────────────────
+const CITY_DATA = {
+  Rajapalayam: {
+    hospitals: [
+      { name:"Raja's Hospital", addr:"Virudhunagar Main Road, Rajapalayam", maps:"https://maps.google.com/?q=Raja+Hospital+Rajapalayam" },
+      { name:"Govt. Hospital Rajapalayam", addr:"Hospital Road, Rajapalayam", maps:"https://maps.google.com/?q=Government+Hospital+Rajapalayam" },
+      { name:"Sri Ramakrishna Hospital", addr:"Rajapalayam", maps:"https://maps.google.com/?q=Sri+Ramakrishna+Hospital+Rajapalayam" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Rajapalayam+Tamil+Nadu" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Rajapalayam", addr:"Main Road, Rajapalayam", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Rajapalayam" },
+      { name:"Medical Shops — Hospital Road", addr:"Near Govt Hospital, Rajapalayam", maps:"https://maps.google.com/?q=medical+shop+Rajapalayam" },
+    ]
+  },
+  Tirunelveli: {
+    hospitals: [
+      { name:"Tirunelveli Medical College Hospital", addr:"High Ground Road, Tirunelveli", maps:"https://maps.google.com/?q=Tirunelveli+Medical+College+Hospital" },
+      { name:"Meenakshi Mission Hospital", addr:"Tirunelveli", maps:"https://maps.google.com/?q=Meenakshi+Mission+Hospital+Tirunelveli" },
+      { name:"Govt. Head Quarters Hospital", addr:"Tirunelveli Town", maps:"https://maps.google.com/?q=Government+Headquarters+Hospital+Tirunelveli" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Tirunelveli" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Tirunelveli", addr:"Tirunelveli Junction", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Tirunelveli" },
+      { name:"MedPlus Tirunelveli", addr:"Tirunelveli", maps:"https://maps.google.com/?q=MedPlus+Tirunelveli" },
+    ]
+  },
+  Madurai: {
+    hospitals: [
+      { name:"Rajaji Government Hospital", addr:"Panagal Road, Madurai", maps:"https://maps.google.com/?q=Rajaji+Government+Hospital+Madurai" },
+      { name:"Meenakshi Mission Hospital", addr:"Lake Area, Madurai", maps:"https://maps.google.com/?q=Meenakshi+Mission+Hospital+Madurai" },
+      { name:"Apollo Hospital Madurai", addr:"Madurai", maps:"https://maps.google.com/?q=Apollo+Hospital+Madurai" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Madurai" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Madurai", addr:"Multiple locations, Madurai", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Madurai" },
+      { name:"MedPlus Madurai", addr:"Madurai", maps:"https://maps.google.com/?q=MedPlus+Madurai" },
+    ]
+  },
+  Coimbatore: {
+    hospitals: [
+      { name:"PSG Hospitals", addr:"Peelamedu, Coimbatore", maps:"https://maps.google.com/?q=PSG+Hospitals+Coimbatore" },
+      { name:"Coimbatore Medical College", addr:"Coimbatore", maps:"https://maps.google.com/?q=Coimbatore+Medical+College+Hospital" },
+      { name:"Ganga Hospital", addr:"Coimbatore", maps:"https://maps.google.com/?q=Ganga+Hospital+Coimbatore" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Coimbatore" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Coimbatore", addr:"Multiple locations", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Coimbatore" },
+      { name:"MedPlus Coimbatore", addr:"Coimbatore", maps:"https://maps.google.com/?q=MedPlus+Coimbatore" },
+    ]
+  },
+  Chennai: {
+    hospitals: [
+      { name:"Apollo Hospitals", addr:"Greams Road, Chennai", maps:"https://maps.google.com/?q=Apollo+Hospital+Chennai" },
+      { name:"Fortis Malar Hospital", addr:"Adyar, Chennai", maps:"https://maps.google.com/?q=Fortis+Malar+Hospital+Chennai" },
+      { name:"Govt. General Hospital", addr:"Park Town, Chennai", maps:"https://maps.google.com/?q=Government+General+Hospital+Chennai" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Chennai" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Chennai", addr:"Pan Chennai — 500+ stores", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Chennai" },
+      { name:"MedPlus Chennai", addr:"Multiple locations", maps:"https://maps.google.com/?q=MedPlus+Chennai" },
+    ]
+  },
+  Vellore: {
+    hospitals: [
+      { name:"CMC Vellore", addr:"Ida Scudder Road, Vellore", maps:"https://maps.google.com/?q=CMC+Vellore" },
+      { name:"Govt. Vellore Medical College", addr:"Vellore", maps:"https://maps.google.com/?q=Vellore+Medical+College+Hospital" },
+      { name:"Find All Hospitals Nearby", addr:"Open Google Maps for live search", maps:"https://www.google.com/maps/search/hospitals+near+Vellore" },
+    ],
+    pharmacies: [
+      { name:"Apollo Pharmacy Vellore", addr:"Vellore", maps:"https://maps.google.com/?q=Apollo+Pharmacy+Vellore" },
+    ]
+  }
+};
+
+let activeCity = 'Rajapalayam';
+
+function openMapsForCity() {
+  window.open('https://www.google.com/maps/search/hospitals+near+' + encodeURIComponent(activeCity + ' Tamil Nadu'), '_blank');
+}
+
+function selectCity(el, city) {
+  activeCity = city;
+  document.querySelectorAll('.city-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+
+  // Update the big button label
+  const lbl = document.getElementById('maps-btn-label');
+  if (lbl) lbl.textContent = 'Find hospitals in ' + city;
+
+  const data = CITY_DATA[city];
+  if (!data) return;
+
+  document.getElementById('city-hospitals').innerHTML = `
+    <p class="section-label">🏥 HOSPITALS — ${city.toUpperCase()}</p>
+    ${data.hospitals.map(h => `
+      <a class="location-item" href="${h.maps}" target="_blank">
+        <div class="loc-icon" style="background:#FFEBEE;">🏥</div>
+        <div class="loc-info"><h4>${h.name}</h4><p>${h.addr}</p></div>
+        <span class="dist-badge">Maps ↗</span>
+      </a>`).join('')}`;
+
+  document.getElementById('city-pharmacies').innerHTML = `
+    <p class="section-label" style="margin-top:4px;">💊 PHARMACIES — ${city.toUpperCase()}</p>
+    ${data.pharmacies.map(p => `
+      <a class="location-item" href="${p.maps}" target="_blank">
+        <div class="loc-icon" style="background:#E8F5E9;">💊</div>
+        <div class="loc-info"><h4>${p.name}</h4><p>${p.addr}</p></div>
+        <span class="dist-badge">Maps ↗</span>
+      </a>`).join('')}`;
+}
+// ────────────────────────────────────────────────────────────────
+
+// ── Backend URL — change this to your server address ──────────────
+const BACKEND_URL = 'YOUR_BACKEND_URL'; // 🔴 Replace with your Railway URL e.g. https://medcare.up.railway.app
+
+let selectedSession = 'morning';
+
+function openReminderModal(){
+  document.getElementById('rem-name').value='';
+  document.getElementById('rem-time').value='';
+  document.getElementById('rem-when').value='After breakfast';
+  document.getElementById('rem-email').value='';
+  document.getElementById('rem-phone').value='';
+  document.getElementById('ch-email').checked=false;
+  document.getElementById('ch-sms').checked=false;
+  document.getElementById('field-email').style.display='none';
+  document.getElementById('field-phone').style.display='none';
+  document.getElementById('rem-status').style.display='none';
+  document.getElementById('rem-save-btn').disabled=false;
+  document.getElementById('rem-save-btn').textContent='✔ Save Reminder';
+  selectedSession='morning';
+  document.querySelectorAll('.sess-btn').forEach(b=>b.classList.toggle('active',b.dataset.sess==='morning'));
+  const m=document.getElementById('reminder-modal');
+  m.style.display='flex';
+}
+
+function closeReminderModal(){
+  document.getElementById('reminder-modal').style.display='none';
+}
+
+function toggleChannel(){
+  const emailOn = document.getElementById('ch-email').checked;
+  const smsOn   = document.getElementById('ch-sms').checked;
+  document.getElementById('field-email').style.display = emailOn ? 'block' : 'none';
+  document.getElementById('field-phone').style.display = smsOn  ? 'block' : 'none';
+  // Highlight checked labels
+  document.getElementById('lbl-email-ch').style.borderColor = emailOn ? '#1565C0' : '#E0E7EF';
+  document.getElementById('lbl-sms-ch').style.borderColor   = smsOn   ? '#1565C0' : '#E0E7EF';
+}
+
+function showReminderStatus(msg, type){
+  const el = document.getElementById('rem-status');
+  el.style.display = 'block';
+  el.textContent = msg;
+  if(type === 'success'){
+    el.style.background = '#E8F5E9'; el.style.color = '#2E7D32'; el.style.border = '1px solid #A5D6A7';
+  } else if(type === 'error'){
+    el.style.background = '#FFEBEE'; el.style.color = '#C62828'; el.style.border = '1px solid #EF9A9A';
+  } else {
+    el.style.background = '#E3F2FD'; el.style.color = '#1565C0'; el.style.border = '1px solid #90CAF9';
+  }
+}
+
+const SESSION_LABELS={morning:'Morning',noon:'Noon',evening:'Evening',night:'Night'};
+const SESSION_BADGE_CLASS={morning:'morning',noon:'noon',evening:'evening',night:'night'};
+
+async function saveReminder(){
+  const name  = document.getElementById('rem-name').value.trim();
+  const time  = document.getElementById('rem-time').value;
+  const when  = document.getElementById('rem-when').value;
+  const email = document.getElementById('rem-email').value.trim();
+  const phone = document.getElementById('rem-phone').value.trim();
+  const emailOn = document.getElementById('ch-email').checked;
+  const smsOn   = document.getElementById('ch-sms').checked;
+
+  if(!name){ alert('Please enter a medicine name.'); return; }
+  if(!time){ alert('Please select a time.'); return; }
+  if(emailOn && !email){ alert('Please enter your email address.'); return; }
+  if(smsOn && !phone){ alert('Please enter your mobile number.'); return; }
+  if(smsOn && !/^[6-9]\d{9}$/.test(phone)){
+    alert('Please enter a valid 10-digit Indian mobile number (starting with 6-9).');
+    return;
+  }
+
+  // Format time label for UI
+  const [h,m] = time.split(':');
+  const hr    = parseInt(h);
+  const ampm  = hr >= 12 ? 'PM' : 'AM';
+  const hr12  = hr % 12 || 12;
+  const timeStr = `${hr12}:${m} ${ampm}`;
+
+  // Add to reminder list immediately
+  const list = document.querySelector('#page-reminder .card');
+  const item = document.createElement('div');
+  item.className = 'reminder-item';
+  const channels = [];
+  if(emailOn) channels.push('📧');
+  if(smsOn)   channels.push('📱');
+  const chTag = channels.length ? `<span style="font-size:11px;color:#1565C0;margin-left:4px;">${channels.join(' ')}</span>` : '';
+  item.innerHTML=`<div class="rem-info"><h4>${name}${chTag}</h4><p>${when} · ${timeStr}</p></div><span class="badge ${SESSION_BADGE_CLASS[selectedSession]}">${SESSION_LABELS[selectedSession]}</span>`;
+  list.appendChild(item);
+
+  // Browser notification (existing)
+  scheduleNotification(name, when, hr, parseInt(m));
+
+  // If no remote channels selected, just close
+  if(!emailOn && !smsOn){
+    closeReminderModal();
+    return;
+  }
+
+  // ── Call backend API ─────────────────────────────────────────
+  const btn = document.getElementById('rem-save-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Scheduling...';
+  showReminderStatus('Connecting to notification server...', 'info');
+
+  const notify = [];
+  if(emailOn) notify.push('email');
+  if(smsOn)   notify.push('sms');
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/reminder/schedule`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        medicineName: name,
+        whenToTake: when,
+        time,
+        email: emailOn ? email : undefined,
+        phone: smsOn   ? phone : undefined,
+        notify,
+      }),
+    });
+
+    const data = await res.json();
+
+    if(res.ok && data.success){
+      const channelNames = notify.map(c => c === 'email' ? `Email (${email})` : `SMS (+91 ${phone})`).join(' & ');
+      showReminderStatus(`✅ Reminder scheduled! You'll get ${channelNames} alerts daily at ${timeStr}.`, 'success');
+      btn.textContent = '✅ Saved!';
+      setTimeout(closeReminderModal, 2200);
+    } else {
+      throw new Error(data.error || 'Server error');
+    }
+  } catch(e) {
+    showReminderStatus(`⚠️ Server offline — reminder saved locally only. Start the backend to enable ${notify.join('/')} alerts.\n(${e.message})`, 'error');
+    btn.disabled = false;
+    btn.textContent = '✔ Save Reminder';
+    // Still close after a delay so the user sees the message
+    setTimeout(closeReminderModal, 3000);
+  }
+}
+
+function selectSession(el){
+  document.querySelectorAll('.sess-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSession=el.dataset.sess;
+}
+
+function scheduleNotification(name,when,hour,minute){
+  if(!('Notification' in window)){return;}
+  Notification.requestPermission().then(perm=>{
+    if(perm!=='granted')return;
+    const now=new Date();
+    const target=new Date();
+    target.setHours(hour,minute,0,0);
+    if(target<=now)target.setDate(target.getDate()+1);
+    const delay=target-now;
+    setTimeout(()=>{
+      new Notification('💊 MedCare Reminder',{body:`Time to take ${name} — ${when}`,icon:'https://cdn-icons-png.flaticon.com/512/2421/2421591.png'});
+    },delay);
+  });
+}
+// ────────────────────────────────────────────────────────────────
+
+function showTyping(){
+  const area=document.getElementById('chat-area');
+  const t=document.createElement('div');t.className='typing';t.id='typing-indicator';
+  t.innerHTML='<span></span><span></span><span></span>';
+  area.appendChild(t);area.scrollTop=area.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+</script>
+</body>
+</html>
